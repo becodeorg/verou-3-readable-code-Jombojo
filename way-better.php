@@ -1,13 +1,13 @@
 <?php
 
 
-function orderPizza($pizzatype, $forWho) {
+function orderPizza($pizzaType, $forWho) {
 
-    $type = $pizzatype;
+    $type = $pizzaType;
     echo 'Creating new order... <br>';
     $toPrint = 'A ';
-    $toPrint .= $pizzatype;
-    $price = costCalculation($type);
+    $toPrint .= $pizzaType;
+    $price = costCalculation($pizzaType);
     $address = 'unknown';
 
     if($forWho == 'koen') {
