@@ -1,73 +1,53 @@
 <?php
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
-function orderPizza($pizzaType, $forWho) {
+function orderPizza($pizzaType, $recipient)
+{
+    $price = getPriceForPizza($pizzaType);
+    $address = getAddressForRecipient($recipient);
 
-    $type = $pizzaType;
     echo 'Creating new order... <br>';
-    $toPrint = 'A ';
-    $toPrint .= $pizzaType;
-    $price = costCalculation($pizzaType);
-    $address = 'unknown';
-
-    if($forWho == 'koen') {
-        $address = 'A yacht in Antwerp';
-    } elseif ($forWho == 'manuele') {
-        $address = 'Somewhere in Belgium';
-    } elseif ($forWho == 'students') {
-        $address = 'BeCode office';
-    }
-
-    $toPrint .=   ' pizza should be sent to ' . $forWho . ". <br>The address: {$address}.";
-    echo $toPrint; echo '<br>';
-    echo'The bill is €'.$price.'.<br>';
-    echo "Order finished.<br><br>";
+    echo "A {$pizzaType} should be sent to {$recipient}. <br> The address: {$address}.<br>";
+    echo 'The bill is €' . $price . '.<br>';
+    echo 'Order finished.<br><br>';
 }
 
-function total_price($price) {
-    return $price;
+function getAddressForRecipient($recipient)
+{
+    switch (strtolower($recipient)) {
+        case 'koen':
+            return 'a yacht in Antwerp';
+        case 'manuele':
+            return 'somewhere in Belgium';
+        case 'students':
+            return 'BeCode office';
+        default:
+            throw new Exception('Missing address for order from ' . $recipient);
+    }
 }
 
-// function test($pizzaType) {
-//     echo "Test: type is {$pizzaType}. <br>";
-// }
-
-function costCalculation($pizzaType) {
-    $cost = 'unknown';
-
-    if ($pizzaType == 'marguerita') {
-        $cost = 5;
-    }
-
-    else {
-        if ($pizzaType == 'golden') {
-            $cost = 100;
-        }
-
-        if ($pizzaType == 'calzone') {
-            $cost = 10;
-        }
-
-        if ($pizzaType == 'hawaii') {
+function getPriceForPizza($pizzaType)
+{
+    switch ($pizzaType) {
+        case 'marguerita':
+            return 5;
+        case 'golden':
+            return 100;
+        case 'calzone':
+            return 10;
+        case 'hawaii':
             throw new Exception('Computer says no');
-        }
-    }
-    return $cost;
-}
-
-function orderPizzaAll() {
-    $test= 0;
-    orderPizza('calzone', 'koen');
-    orderPizza('marguerita', 'manuele');
-    orderPizza('golden', 'students');
-}
-
-function make_Allhappy($do_it) {
-    if ($do_it) {
-        orderPizzaAll();
-    } else {
-        // Should not do anything when false
     }
 }
 
-make_Allhappy(true);
+function orderPizzaForAll()
+{
+    orderPizza('calzone', 'Koen');
+    orderPizza('marguerita', 'Manuele');
+    orderPizza('golden', 'Students');
+}
+
+orderPizzaForAll();
